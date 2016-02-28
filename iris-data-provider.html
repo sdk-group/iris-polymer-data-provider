@@ -7,6 +7,7 @@
         display: block;
       }
     </style>
+    <iris-administrator id="administrator"></iris-administrator>
 
   </template>
   <script>
@@ -14,8 +15,21 @@
       is: 'iris-data-provider',
       properties: {
         entityType: {
-          type: String
+          type: String,
+          observer: "_entityType"
+        },
+        data: {
+          type: Array,
+          notify: true,
+          value: []
         }
+      },
+      _entityType() {
+        console.log(this.entityType);
+        this.$.administrator.list(_.capitalize(this.entityType)).then((r) => {
+          this.set('data', r);
+          console.log(r);
+        })
       }
     });
   </script>
